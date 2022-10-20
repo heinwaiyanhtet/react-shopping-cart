@@ -1,24 +1,19 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import SharedLayout from './pages/SharedLayout';
+import Home from './pages/products';
+import Cost from './pages/Cost';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+          <Route path='/' element={<SharedLayout/>}>
+            <Route index element={<Home/>}/>
+            <Route path='/cost' element={ <Cost/>}/>
+          </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
