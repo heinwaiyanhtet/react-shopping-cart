@@ -1,12 +1,12 @@
-import StarIcon from '@mui/icons-material/Star';
-const RatingStars = () => {
+import { Rating } from "@mui/material";
+
+const RatingStars = (props) => {  
     return (
      <div>
-        <StarIcon sx={{color:'warning.main'}}/>
-        <StarIcon sx={{color:'warning.main'}}/>
-        <StarIcon sx={{color:'warning.main'}}/>
-        <StarIcon sx={{color:'warning.main'}}/>
-        <StarIcon sx={{color:'warning.main'}}/>
+      <Rating 
+          name="read-only"
+          value={Math.round(props.rating)}
+      />
      </div>
     );
   };

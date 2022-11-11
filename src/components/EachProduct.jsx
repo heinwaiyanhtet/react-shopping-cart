@@ -23,7 +23,7 @@ export default function Eachproduct() {
         </div>
         <div className="absolute w-11/12 bottom-0 text-center">
             <div className="flex justify-between mb-6">
-            <RatingStars />${product.price}
+            <RatingStars rating={product.rating.rate}/>${product.price}
             </div>
             <div className="text-center mb-8 w-full mt-4">
             <Button
