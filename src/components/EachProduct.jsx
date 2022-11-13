@@ -2,9 +2,12 @@ import React, { useContext, useEffect } from 'react';
 import RatingStars from "./RatingStars";
 import { Button } from "@mui/material";
 import { ProductsContext } from '../context/ProductsContext';
+import { AppContextProvider } from '../context/AppContext';
 
 export default function Eachproduct() {
-    let {products,setProducts} = useContext(ProductsContext);
+    const { products } = useContext(ProductsContext);
+    const { addToCost } = useContext(AppContextProvider);
+    
     return (
        <>
         {products.map((product) => (
@@ -27,6 +30,7 @@ export default function Eachproduct() {
             </div>
             <div className="text-center mb-8 w-full mt-4">
             <Button
+                onClick={()=> {addToCost(product)}}
                 id={product.id}
                 variant="outlined"
                 className="w-5/6"
