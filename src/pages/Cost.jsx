@@ -46,7 +46,15 @@ const Cost = () => {
             <h1>There is no card that you added.</h1>
           )
       }
-      <Divider variant="middle"/>
+      <div className="mb-6 sm:w-screen md:w-9/12 lg:w-6/12 mx-auto">
+        <Divider/>
+        <div className='flex justify-between mt-6'>
+            <h1 className='mb-0 text-4xl'> Total Cost: </h1>
+            <Button variant="contained">
+                <span className=''>Check out</span>
+            </Button>
+        </div>
+      </div>
     </>
   );
 };
