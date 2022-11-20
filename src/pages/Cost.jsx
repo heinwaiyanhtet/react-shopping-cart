@@ -2,34 +2,51 @@ import Input from '@mui/material/Input';
 import Button from '@mui/material/Button';
 import { AppContextProvider } from '../context/AppContext';
 import { useContext } from 'react';
-import { useState } from 'react';
 import Divider from '@mui/material/Divider';
-
+//import { useRef } from 'react';
 
 const Cost = () => {
   const {productList} = useContext(AppContextProvider); 
-  const [costEachItem,setEachItem] = useState("1");  
+  //const costRef = useRef();
+  
+  const inputProps = {
+    min:1,
+  }
+  
+  const costItemCount = (itemCount,itemPrice,itemId) => {
+    const costItemPerPrice = document.getElementById(itemId);
+    const costPerPrice = itemCount * itemPrice;
+    costItemPerPrice.innerHTML = costPerPrice;
+  } 
+
   return (
     <>
       {  
           productList.length > 0 ? (
             productList.map((costItem) => (
               <div key={costItem.id}
-                  className="mb-6 sm:w-screen md:w-9/12 lg:w-6/12 mx-auto p-4 border-2 
+                   className="mb-6 sm:w-screen md:w-9/12 lg:w-6/12 mx-auto p-4 border-2 
                               rounded-lg border-blue-500 grid grid-cols-[2fr_1fr] gap-4
                             "
               >
                 <div>
                   <p className="font-black">${costItem.price}</p>
                   <p className="text-gray-400 mb-2">{costItem.title}</p>
-                  <p className="text-blue-500 font-black">Cost : </p>
+                  <p className="text-blue-500 font-black" 
+                     >Cost : <span id={costItem.id}>{costItem.price} </span> 
+                  </p>
                 </div>
                 <div>
                     <div className='flex flex-row'>
                       <Button variant="contained" className="grow">
                         <span className='text-xl'>+</span>
                       </Button>
-                      <Input fullWidth={false} className='mx-2 grow' value={costEachItem}/>
+                      <Input type='number' fullWidth={false} className='mx-2 grow' defaultValue={1}
+                            inputProps={inputProps}
+                            onChange={(e)=>{
+                               costItemCount(e.target.value,costItem.price,costItem.id);
+                            }}
+                      />
                       <Button variant='contained' className="grow">
                         <span className='text-xl'>-</span>
                       </Button>
@@ -43,7 +60,7 @@ const Cost = () => {
               </div>
             )) 
           ) : (
-            <h1>There is no card that you added.</h1>
+            <h1 className='mb-6 text-4xl sm:w-screen md:w-9/12 lg:w-6/12 mx-auto'>There was no card that you added.</h1>
           )
       }
       <div className="mb-6 sm:w-screen md:w-9/12 lg:w-6/12 mx-auto">
