@@ -4,9 +4,9 @@ import { Button } from "@mui/material";
 import { ProductsContext } from "../context/ProductsContext";
 import { AppContextProvider } from "../context/AppContext";
 
-export default function Eachproduct() { 
+export default function Eachproduct() {
   const { products } = useContext(ProductsContext);
-  const { addToCost } = useContext(AppContextProvider);
+  const { addToCost,productList} = useContext(AppContextProvider);
   return (
     <>
       {products.map((product) => (
@@ -27,9 +27,8 @@ export default function Eachproduct() {
             <div className="text-center mb-8 w-full mt-4">
               <Button
                 onClick={() => {
-                  addToCost(product);
+                  addToCost(product)
                 }}
-                id={product.id}
                 variant="outlined"
                 className="w-5/6"
               >

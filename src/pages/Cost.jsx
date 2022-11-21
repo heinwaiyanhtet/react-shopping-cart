@@ -8,8 +8,8 @@ import { useState } from 'react';
 
 const Cost = () => {
   const {productList} = useContext(AppContextProvider);
-
   const [totalCost,setTotalCost] = useState(0);
+
   //const costRef = useRef();
   const inputProps = {
     min:1,
@@ -20,18 +20,23 @@ const Cost = () => {
     const costPerPrice = itemCount * itemPrice;
     costItemPerPrice.innerHTML = costPerPrice;
   } 
-  
-  useEffect(() => {
-    return () => {
+
+  function calculateTotalCost () {
       const costItemPerPrice = document.querySelectorAll(".costItemPerPrice");
       const PriceArray = [];
       [...costItemPerPrice].forEach((eachPrice) => {
         PriceArray.push(eachPrice.innerHTML);
       })
       const total = PriceArray.reduce((accumulator,current)=>accumulator+Number(current),0)
-      setTotalCost(total);
+      return total;
+  }
+  
+  useEffect(() => {
+    return () => {
+        const total = calculateTotalCost();
+        setTotalCost(total);
     };
-  },[]);
+  },[]); 
 
   return (
     <>
@@ -58,7 +63,9 @@ const Cost = () => {
                       <Input type='number' fullWidth={false} className='mx-2 grow' defaultValue={1}
                             inputProps={inputProps}
                             onChange={(e)=>{
-                               costItemPerCount(e.target.value,costItem.price,costItem.id);
+                                costItemPerCount(e.target.value,costItem.price,costItem.id);
+                                const total = calculateTotalCost();
+                                setTotalCost(total);
                             }}
                       />
                       <Button variant='contained' className="grow">
@@ -80,7 +87,7 @@ const Cost = () => {
       <div className="mb-6 sm:w-screen md:w-9/12 lg:w-6/12 mx-auto">
         <Divider/>
         <div className='flex justify-between mt-6'>
-            <h1 className='mb-0 text-4xl'> Total Cost: {totalCost}</h1>
+            <h1 className='mb-0 text-4xl'> Total Cost: {totalCost.toFixed(2)}</h1>
             <Button variant="contained">
                 <span className=''>Check out </span>
             </Button>

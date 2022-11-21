@@ -7,8 +7,12 @@ const AppContext = ({children}) => {
         <AppContextProvider.Provider value={{
             productList,
             addToCost:(product) => {
-                setProductList([...productList,product]);
-            }
+                const findById = productList.find(eachProduct => 
+                    eachProduct.id === product.id
+                )
+                if(!findById)
+                    setProductList([...productList,product]);
+            },
         }}>
             {children}
         </AppContextProvider.Provider>
