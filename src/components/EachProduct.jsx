@@ -6,7 +6,11 @@ import { AppContextProvider } from "../context/AppContext";
 
 export default function Eachproduct() {
   const { products } = useContext(ProductsContext);
-  const { addToCost,productList} = useContext(AppContextProvider);
+  const  { addToCost,productList } = useContext(AppContextProvider);
+
+  const checkProductId = (productId) => 
+      productList.find(productDetail => productDetail.id === productId);
+
   return (
     <>
       {products.map((product) => (
@@ -29,7 +33,9 @@ export default function Eachproduct() {
                 onClick={() => {
                   addToCost(product)
                 }}
-                variant="outlined"
+                variant = {
+                  !checkProductId(product.id) ? "outlined" : "contained"
+                }
                 className="w-5/6"
               >
                 Add to cart

@@ -4,13 +4,10 @@ import { AppContextProvider } from '../context/AppContext';
 import { useContext, useEffect } from 'react';
 import Divider from '@mui/material/Divider';
 import { useState } from 'react';
-//import { useRef } from 'react';
 
 const Cost = () => {
   const {productList} = useContext(AppContextProvider);
   const [totalCost,setTotalCost] = useState(0);
-
-  //const costRef = useRef();
   const inputProps = {
     min:1,
   }
@@ -18,7 +15,8 @@ const Cost = () => {
   const costItemPerCount = (itemCount,itemPrice,itemId) => {
     const costItemPerPrice = document.getElementById(itemId);
     const costPerPrice = itemCount * itemPrice;
-    costItemPerPrice.innerHTML = costPerPrice;
+    const costPerPriceFixed = costPerPrice.toFixed(2);
+    costItemPerPrice.innerHTML = costPerPriceFixed;
   } 
 
   function calculateTotalCost () {
