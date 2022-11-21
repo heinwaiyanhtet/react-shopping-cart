@@ -1,13 +1,12 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import RatingStars from "./RatingStars";
 import { Button } from "@mui/material";
 import { ProductsContext } from "../context/ProductsContext";
 import { AppContextProvider } from "../context/AppContext";
 
-export default function Eachproduct() {
+export default function Eachproduct() { 
   const { products } = useContext(ProductsContext);
   const { addToCost } = useContext(AppContextProvider);
-
   return (
     <>
       {products.map((product) => (

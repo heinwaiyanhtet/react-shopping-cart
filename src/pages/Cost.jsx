@@ -1,23 +1,37 @@
 import Input from '@mui/material/Input';
 import Button from '@mui/material/Button';
 import { AppContextProvider } from '../context/AppContext';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import Divider from '@mui/material/Divider';
+import { useState } from 'react';
 //import { useRef } from 'react';
 
 const Cost = () => {
-  const {productList} = useContext(AppContextProvider); 
+  const {productList} = useContext(AppContextProvider);
+
+  const [totalCost,setTotalCost] = useState(0);
   //const costRef = useRef();
-  
   const inputProps = {
     min:1,
   }
-  
-  const costItemCount = (itemCount,itemPrice,itemId) => {
+
+  const costItemPerCount = (itemCount,itemPrice,itemId) => {
     const costItemPerPrice = document.getElementById(itemId);
     const costPerPrice = itemCount * itemPrice;
     costItemPerPrice.innerHTML = costPerPrice;
   } 
+  
+  useEffect(() => {
+    return () => {
+      const costItemPerPrice = document.querySelectorAll(".costItemPerPrice");
+      const PriceArray = [];
+      [...costItemPerPrice].forEach((eachPrice) => {
+        PriceArray.push(eachPrice.innerHTML);
+      })
+      const total = PriceArray.reduce((accumulator,current)=>accumulator+Number(current),0)
+      setTotalCost(total);
+    };
+  },[]);
 
   return (
     <>
@@ -33,7 +47,7 @@ const Cost = () => {
                   <p className="font-black">${costItem.price}</p>
                   <p className="text-gray-400 mb-2">{costItem.title}</p>
                   <p className="text-blue-500 font-black" 
-                     >Cost : <span id={costItem.id}>{costItem.price} </span> 
+                     >Cost : <span id={costItem.id} className="costItemPerPrice">{costItem.price} </span> 
                   </p>
                 </div>
                 <div>
@@ -44,7 +58,7 @@ const Cost = () => {
                       <Input type='number' fullWidth={false} className='mx-2 grow' defaultValue={1}
                             inputProps={inputProps}
                             onChange={(e)=>{
-                               costItemCount(e.target.value,costItem.price,costItem.id);
+                               costItemPerCount(e.target.value,costItem.price,costItem.id);
                             }}
                       />
                       <Button variant='contained' className="grow">
@@ -66,9 +80,9 @@ const Cost = () => {
       <div className="mb-6 sm:w-screen md:w-9/12 lg:w-6/12 mx-auto">
         <Divider/>
         <div className='flex justify-between mt-6'>
-            <h1 className='mb-0 text-4xl'> Total Cost: </h1>
+            <h1 className='mb-0 text-4xl'> Total Cost: {totalCost}</h1>
             <Button variant="contained">
-                <span className=''>Check out</span>
+                <span className=''>Check out </span>
             </Button>
         </div>
       </div>
