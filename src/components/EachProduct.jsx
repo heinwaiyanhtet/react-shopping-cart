@@ -1,13 +1,10 @@
 import React, { useContext, useState } from "react";
 import RatingStars from "./RatingStars";
 import { Button } from "@mui/material";
-import { ProductsContext } from "../context/ProductsContext";
 import { AppContextProvider } from "../context/AppContext";
 
 export default function Eachproduct() {
-  const { products } = useContext(ProductsContext);
-  const  { addToCost,productList } = useContext(AppContextProvider);
-
+  const  { addToCost,productList,products} = useContext(AppContextProvider);
   const checkProductId = (productId) => 
       productList.find(productDetail => productDetail.id === productId);
 
@@ -34,7 +31,7 @@ export default function Eachproduct() {
                   addToCost(product)
                 }}
                 variant = {
-                  !checkProductId(product.id) ? "outlined" : "contained"
+                    !checkProductId(product.id) ? "outlined" : "contained"
                 }
                 className="w-5/6"
               >

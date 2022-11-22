@@ -13,7 +13,7 @@ const Cost = () => {
   }
 
   const costItemPerCount = (itemCount,itemPrice,itemId) => {
-    const costItemPerPrice = document.getElementById(itemId);
+    const costItemPerPrice = document.getElementById("perItemCost"+itemId);
     const costPerPrice = itemCount * itemPrice;
     const costPerPriceFixed = costPerPrice.toFixed(2);
     costItemPerPrice.innerHTML = costPerPriceFixed;
@@ -29,6 +29,15 @@ const Cost = () => {
       return total;
   }
   
+  function plusCost(costItemId,itemPrice,itemId){
+      const getInput = document.getElementById("costInputValue"+costItemId);
+      const getInputValue = getInput.value;
+      let NumberGetInputValue = Number(getInputValue);
+      NumberGetInputValue += 1;
+      getInput.value = NumberGetInputValue;
+      costItemPerCount(getInput.value,itemPrice,itemId)
+  }
+
   useEffect(() => {
     return () => {
         const total = calculateTotalCost();
@@ -50,16 +59,25 @@ const Cost = () => {
                   <p className="font-black">${costItem.price}</p>
                   <p className="text-gray-400 mb-2">{costItem.title}</p>
                   <p className="text-blue-500 font-black" 
-                     >Cost : <span id={costItem.id} className="costItemPerPrice">{costItem.price} </span> 
+                     >Cost : <span id={"perItemCost" + costItem.id} className="costItemPerPrice">{costItem.price} </span> 
                   </p>
                 </div>
                 <div>
                     <div className='flex flex-row'>
-                      <Button variant="contained" className="grow">
+                      <Button variant="contained" className="grow"
+                       onClick={
+                        () => {
+                            plusCost(costItem.id,costItem.price,costItem.id);
+                            const total = calculateTotalCost();
+                            setTotalCost(total);
+                        }
+                      }>
                         <span className='text-xl'>+</span>
                       </Button>
                       <Input type='number' fullWidth={false} className='mx-2 grow' defaultValue={1}
                             inputProps={inputProps}
+                            id={"costInputValue"+costItem.id}
+                            onInvalid={() => {console.log("hello")}}
                             onChange={(e)=>{
                                 costItemPerCount(e.target.value,costItem.price,costItem.id);
                                 const total = calculateTotalCost();
