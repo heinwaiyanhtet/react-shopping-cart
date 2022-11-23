@@ -8,42 +8,46 @@ import { AppContextProvider } from "../context/AppContext";
 
 
 const Navbar = () => {
-  const [age, setAge] = useState('');
-  //const [uniqueCategories, setUniqueCategories] = useState('');
-  //const {products} = useContext(AppContextProvider);
+  const [category, setCategory] = useState('');
+  const {products , isSuccess} = useContext(AppContextProvider);
   const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value);
+    setCategory(event.target.value);
   };  
+  
+  const categoryGet = () => {
+      const arrayCategory = [];
+      products.map(el => {
+        arrayCategory.push(el.category)
+      });
+      const uniqueCategory = [...new Set(arrayCategory)];
+      return uniqueCategory;
+  }
+
   return (
   <>
-  {/* {
-    products.map(el => {
-      const arrayCategory = [];
-      arrayCategory.push(el.category)
-      var uniqueCategory = [...new Set(arrayCategory)];
-    })
-  } */}
-
     <nav className="bg-gray-100 border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900 mb-6">
           <div className="container flex flex-wrap justify-between items-center mx-auto">
               <div className="flex md:order-2">
                 <div>
                     <FormControl sx={{  mx: 1, minWidth: 120 }} size="small">
-                      <InputLabel id="demo-select-small">Age</InputLabel>
+                      <InputLabel id="demo-select-small">Category</InputLabel>
                       <Select
                         labelId="demo-select-small"
                         id="demo-select-small"
-                        value={age}
-                        label="Age"
+                        value={category}
+                        label="Category"
                         onChange={handleChange}
                       >
-                        {/* <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem> */}
-                        <MenuItem value={10}>Ten</MenuItem>
-
-                        {/* <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem> */}
+                        <MenuItem value="">
+                           <em>None</em>
+                        </MenuItem>
+                        {
+                           isSuccess &&  ( 
+                              categoryGet().map(category => 
+                                  <MenuItem value={category}>{category}</MenuItem>
+                              )
+                           ) 
+                        }
                       </Select>
                     </FormControl>
                 </div>
