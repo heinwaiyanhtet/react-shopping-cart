@@ -1,17 +1,78 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import RatingStars from "./RatingStars";
 import { Button } from "@mui/material";
 import { AppContextProvider } from "../context/AppContext";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function Eachproduct() {
-  const  { addToCost,productList,products} = useContext(AppContextProvider);
-  const checkProductId = (productId) => 
+  const { 
+          addToCost,
+          productList,
+          products , 
+          category,
+          search
+        } = useContext(AppContextProvider);
+
+  const navigate = useNavigate();
+
+  const checkProductId = productId => 
       productList.find(productDetail => productDetail.id === productId);
+  
+  const goProductDetail = navigationId => 
+          navigate("/products/"+navigationId)
+
+  const searchProducts = _ => {
+      const finalSearch = Object.assign([],products); 
+
+      //when there are no category and no search
+      if(category === "allCategory" || category === ""){
+          if(search === '')
+            return finalSearch;
+      }
+
+      //when there are categories and searches
+      if(category && search !== ''){
+         return finalSearch.filter((product) => {
+            if(
+                product.category === category ||
+                product.title.toLowerCase().indexOf(search) > -1 ||
+                product.description.toLowerCase().indexOf(search) > -1 ||
+                product.price == search
+              ) 
+                return product
+          })
+      }
+
+      // when there is only category
+      if(category && search == ''){
+          return finalSearch.filter(product => product.category === category)
+      }
+
+      //when there is only search
+      if(search.trim().length > 0 && !category)
+      {
+        return finalSearch.filter( product => {
+            if(
+              product.title.toLowerCase().indexOf(search) > -1 ||
+              product.description.toLowerCase().indexOf(search) > -1 ||
+              product.price == search
+              ) return product;
+        })
+      }
+  }
+
+  useEffect(()=>{
+     searchProducts(); 
+  },[])
 
   return (
     <>
-      {products.map((product) => (
-        <div className="border h-[22rem] px-3 relative mt-24" key={product.id}>
+      {searchProducts().map( product => (
+        <div onClick={ _ => {
+           goProductDetail(product.id)
+          }} 
+           className="border h-[22rem] px-3 relative mt-24" key={product.id}>
           <div className="flex flex-col">
             <figure className="w-full text-center">
               <img
@@ -27,7 +88,8 @@ export default function Eachproduct() {
             </div>
             <div className="text-center mb-8 w-full mt-4">
               <Button
-                onClick={() => {
+                onClick={(event) => {
+                  event.stopPropagation();
                   addToCost(product)
                 }}
                 variant = {

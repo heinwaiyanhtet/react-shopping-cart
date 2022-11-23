@@ -72,7 +72,7 @@ const Cost = () => {
     <>
       {  
           productList.length > 0 ? (
-            productList.map((costItem) => (
+            productList.map(costItem => (
               <div key={costItem.id}
                    className="mb-6 sm:w-screen md:w-9/12 lg:w-6/12 mx-auto p-4 border-2 
                               rounded-lg border-blue-500 grid grid-cols-[2fr_1fr] gap-4

@@ -6,7 +6,8 @@ export const AppContextProvider = createContext();
 const AppContext = ({children}) => {
     const [productList,setProductList] = useState([]);
     const [products, setProducts] = useLocalStorage("products", []);
-    
+    const [category,setCategory] = useState('');
+    const [search,setSearch] = useState('');
     const {
       isLoading,
       isSuccess,
@@ -18,8 +19,8 @@ const AppContext = ({children}) => {
         response.json()
       );
     }
-    useEffect(() => {
-      return () => {
+    useEffect( _ => {
+      return _ => {
         fetchFakeStore().then((response) => {
           setProducts(response);
         });
@@ -33,6 +34,10 @@ const AppContext = ({children}) => {
             isSuccess,
             productList,
             setProductList,
+            category,
+            setCategory,
+            search,
+            setSearch,
             addToCost:(product) => {
                 const findById = productList.find(eachProduct => 
                     eachProduct.id === product.id
@@ -40,6 +45,7 @@ const AppContext = ({children}) => {
                 if(!findById)
                     setProductList([...productList,product]);
             },
+
         }}>
             {children}
         </AppContextProvider.Provider>
