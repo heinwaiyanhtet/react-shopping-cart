@@ -32,6 +32,7 @@ const AppContext = ({children}) => {
             isLoading,
             isSuccess,
             productList,
+            setProductList,
             addToCost:(product) => {
                 const findById = productList.find(eachProduct => 
                     eachProduct.id === product.id

@@ -6,7 +6,7 @@ import Divider from '@mui/material/Divider';
 import { useState } from 'react';
 
 const Cost = () => {
-  const {productList} = useContext(AppContextProvider);
+  const {productList,setProductList} = useContext(AppContextProvider);
   const [totalCost,setTotalCost] = useState(0);
   const inputProps = {
     min:1,
@@ -29,13 +29,36 @@ const Cost = () => {
       return total;
   }
   
-  function plusCost(costItemId,itemPrice,itemId){
+  function GetInputValue(costItemId) {
       const getInput = document.getElementById("costInputValue"+costItemId);
       const getInputValue = getInput.value;
-      let NumberGetInputValue = Number(getInputValue);
+      const NumberGetInputValue = Number(getInputValue);
+      return NumberGetInputValue;
+  }
+
+  function setInputValue(costItemId,itemPrice,itemId,NumberGetInputValue){
+    const getInput = document.getElementById("costInputValue"+costItemId);
+    getInput.value = NumberGetInputValue;
+    costItemPerCount(getInput.value,itemPrice,itemId)
+  }
+
+  function plusCost(costItemId,itemPrice,itemId){
+      let NumberGetInputValue =  GetInputValue(costItemId);
       NumberGetInputValue += 1;
-      getInput.value = NumberGetInputValue;
-      costItemPerCount(getInput.value,itemPrice,itemId)
+      setInputValue(costItemId,itemPrice,itemId,NumberGetInputValue)
+  }
+
+  function minusCost(costItemId,itemPrice,itemId){
+    let NumberGetInputValue =  GetInputValue(costItemId);
+    NumberGetInputValue -= 1;
+    if(NumberGetInputValue < 1)
+      return NumberGetInputValue = 1 
+    setInputValue(costItemId,itemPrice,itemId,NumberGetInputValue)
+  }
+
+   function delCost(delId) {
+      const costFilterById = productList.filter(product => product.id !== delId);
+      setProductList(costFilterById);
   }
 
   useEffect(() => {
@@ -43,7 +66,7 @@ const Cost = () => {
         const total = calculateTotalCost();
         setTotalCost(total);
     };
-  },[]); 
+  },[delCost]); 
 
   return (
     <>
@@ -84,13 +107,21 @@ const Cost = () => {
                                 setTotalCost(total);
                             }}
                       />
-                      <Button variant='contained' className="grow">
+                      <Button variant='contained' className="grow"
+                        onClick={
+                          () => {
+                              minusCost(costItem.id,costItem.price,costItem.id);
+                              const total = calculateTotalCost();
+                              setTotalCost(total);
+                          }
+                        }
+                      >
                         <span className='text-xl'>-</span>
                       </Button>
                     </div>
                     <div className='mt-2 text-right'>
-                      <Button variant="contained" color="error" className="w-6/12">
-                        <span className=''>delete</span>
+                      <Button onClick={() => delCost(costItem.id)} variant="contained" color="error" className="w-6/12">
+                          <span className=''>delete</span>
                       </Button>
                     </div>
                 </div>

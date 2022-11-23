@@ -44,7 +44,7 @@ const Navbar = () => {
                         {
                            isSuccess &&  ( 
                               categoryGet().map(category => 
-                                  <MenuItem value={category}>{category}</MenuItem>
+                                  <MenuItem key={category} value={category}>{category}</MenuItem>
                               )
                            ) 
                         }
